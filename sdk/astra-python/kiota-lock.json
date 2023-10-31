@@ -1,0 +1,37 @@
+{
+  "descriptionHash": "9CA253290A29E2BEF497A66340AAC981A2ED391D5DCC7861AD68AEDE45D4A7AE32D148EDE433815D6A1BAE42DD739912A24975159CE79807ECBB9AF63FE0E967",
+  "descriptionLocation": "/Users/kirstenhunter/src/kiota-python/json-api-openapi-spec.yaml",
+  "lockFileVersion": "1.0.0",
+  "kiotaVersion": "1.7.0",
+  "clientClassName": "AstraDBClient",
+  "clientNamespaceName": "AstraDBSDK",
+  "language": "Python",
+  "usesBackingStore": false,
+  "excludeBackwardCompatible": false,
+  "includeAdditionalData": false,
+  "serializers": [
+    "Microsoft.Kiota.Serialization.Json.JsonSerializationWriterFactory",
+    "Microsoft.Kiota.Serialization.Text.TextSerializationWriterFactory",
+    "Microsoft.Kiota.Serialization.Form.FormSerializationWriterFactory",
+    "Microsoft.Kiota.Serialization.Multipart.MultipartSerializationWriterFactory"
+  ],
+  "deserializers": [
+    "Microsoft.Kiota.Serialization.Json.JsonParseNodeFactory",
+    "Microsoft.Kiota.Serialization.Text.TextParseNodeFactory",
+    "Microsoft.Kiota.Serialization.Form.FormParseNodeFactory"
+  ],
+  "structuredMimeTypes": [
+    "application/json",
+    "text/plain",
+    "application/x-www-form-urlencoded",
+    "multipart/form-data"
+  ],
+  "includePatterns": [
+    "/",
+    "/v1",
+    "/v1/{namespace}",
+    "/v1/{namespace}/{collection}"
+  ],
+  "excludePatterns": [],
+  "disabledValidationRules": []
+}

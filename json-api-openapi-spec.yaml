@@ -1,0 +1,1310 @@
+---
+openapi: 3.0.3
+info:
+  title: Astra DB JSON API
+  description: "The Astra DB JSON API modifies and queries data stored as unstructured\
+    \ JSON documents in collections. See the [documentation site](https://docs.datastax.com/en/astra-serverless/docs/develop/dev-with-json.html)\
+    \ for additional information."
+  termsOfService: https://www.datastax.com/legal
+  contact:
+    name: DataStax
+    url: https://www.datastax.com/contact-us
+  version: 1.0.0-BETA-1
+servers:
+- url: /api/json
+tags:
+- name: General
+  description: Executes general commands.
+- name: Namespaces
+  description: Executes namespace commands.
+- name: Documents
+  description: Executes document commands against a single collection.
+paths:
+  /v1:
+    post:
+      tags:
+      - General
+      summary: Execute command
+      description: Executes a single general command.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              anyOf:
+              - $ref: '#/components/schemas/CreateEmbeddingServiceCommand'
+              - $ref: '#/components/schemas/CreateNamespaceCommand'
+            examples:
+              createEmbeddingService:
+                $ref: '#/components/examples/createEmbeddingService'
+              createNamespace:
+                $ref: '#/components/examples/createNamespace'
+              createNamespaceWithReplication:
+                $ref: '#/components/examples/createNamespaceWithReplication'
+              findNamespaces:
+                $ref: '#/components/examples/findNamespaces'
+              dropNamespace:
+                $ref: '#/components/examples/dropNamespace'
+      responses:
+        "200":
+          description: "Call successful. Returns result of the command execution.\
+            \ Note that in case of errors, response code remains `HTTP 200`."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommandResult'
+              examples:
+                resultCreate:
+                  $ref: '#/components/examples/resultCreate'
+                resultFindNamespaces:
+                  $ref: '#/components/examples/resultFindNamespaces'
+                resultError:
+                  $ref: '#/components/examples/resultError'
+      security:
+      - Token: []
+  /v1/{namespace}:
+    post:
+      tags:
+      - Namespaces
+      summary: Execute command
+      description: Executes a single command against a collection.
+      parameters:
+      - $ref: '#/components/parameters/namespace'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              anyOf:
+              - $ref: '#/components/schemas/CreateCollectionCommand'
+            examples:
+              createCollection:
+                $ref: '#/components/examples/createCollection'
+              createCollectionVectorSearch:
+                $ref: '#/components/examples/createCollectionVectorSearch'
+              findCollections:
+                $ref: '#/components/examples/findCollections'
+              deleteCollection:
+                $ref: '#/components/examples/deleteCollection'
+      responses:
+        "200":
+          description: "Call successful. Returns result of the command execution.\
+            \ Note that in case of errors, response code remains `HTTP 200`."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommandResult'
+              examples:
+                resultCreate:
+                  $ref: '#/components/examples/resultCreate'
+                resultFindCollections:
+                  $ref: '#/components/examples/resultFindCollections'
+                resultError:
+                  $ref: '#/components/examples/resultError'
+      security:
+      - Token: []
+  /v1/{namespace}/{collection}:
+    post:
+      tags:
+      - Documents
+      summary: Execute command
+      description: Executes a single command against a collection.
+      parameters:
+      - $ref: '#/components/parameters/namespace'
+      - $ref: '#/components/parameters/collection'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              anyOf:
+              - $ref: '#/components/schemas/CountDocumentsCommands'
+              - $ref: '#/components/schemas/DeleteOneCommand'
+              - $ref: '#/components/schemas/DeleteManyCommand'
+              - $ref: '#/components/schemas/FindOneCommand'
+              - $ref: '#/components/schemas/FindCommand'
+              - $ref: '#/components/schemas/FindOneAndDeleteCommand'
+              - $ref: '#/components/schemas/FindOneAndReplaceCommand'
+              - $ref: '#/components/schemas/FindOneAndUpdateCommand'
+              - $ref: '#/components/schemas/InsertOneCommand'
+              - $ref: '#/components/schemas/InsertManyCommand'
+              - $ref: '#/components/schemas/UpdateManyCommand'
+              - $ref: '#/components/schemas/UpdateOneCommand'
+            examples:
+              countDocuments:
+                $ref: '#/components/examples/countDocuments'
+              deleteOne:
+                $ref: '#/components/examples/deleteOne'
+              deleteMany:
+                $ref: '#/components/examples/deleteMany'
+              find:
+                $ref: '#/components/examples/find'
+              findVectorSearch:
+                $ref: '#/components/examples/findVectorSearch'
+              findOne:
+                $ref: '#/components/examples/findOne'
+              findOneVectorSearch:
+                $ref: '#/components/examples/findOneVectorSearch'
+              findOneAndDelete:
+                $ref: '#/components/examples/findOneAndDelete'
+              findOneAndReplace:
+                $ref: '#/components/examples/findOneAndReplace'
+              findOneAndUpdate:
+                $ref: '#/components/examples/findOneAndUpdate'
+              insertOne:
+                $ref: '#/components/examples/insertOne'
+              insertMany:
+                $ref: '#/components/examples/insertMany'
+              updateMany:
+                $ref: '#/components/examples/updateMany'
+              updateOne:
+                $ref: '#/components/examples/updateOne'
+      responses:
+        "200":
+          description: "Call successful. Returns result of the command execution.\
+            \ Note that in case of errors, response code remains `HTTP 200`."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommandResult'
+              examples:
+                resultCount:
+                  $ref: '#/components/examples/resultCount'
+                resultDeleteOne:
+                  $ref: '#/components/examples/resultDeleteOne'
+                resultDeleteMany:
+                  $ref: '#/components/examples/resultDeleteMany'
+                resultFind:
+                  $ref: '#/components/examples/resultFind'
+                resultFindOne:
+                  $ref: '#/components/examples/resultFindOne'
+                resultFindOneAndDelete:
+                  $ref: '#/components/examples/resultFindOneAndDelete'
+                resultFindOneAndReplace:
+                  $ref: '#/components/examples/resultFindOneAndReplace'
+                resultFindOneAndUpdate:
+                  $ref: '#/components/examples/resultFindOneAndUpdate'
+                resultFindOneAndUpdateUpsert:
+                  $ref: '#/components/examples/resultFindOneAndUpdateUpsert'
+                resultInsert:
+                  $ref: '#/components/examples/resultInsert'
+                resultUpdateOne:
+                  $ref: '#/components/examples/resultUpdateOne'
+                resultUpdateOneUpsert:
+                  $ref: '#/components/examples/resultUpdateOneUpsert'
+                resultUpdateMany:
+                  $ref: '#/components/examples/resultUpdateMany'
+                resultUpdateManyUpsert:
+                  $ref: '#/components/examples/resultUpdateManyUpsert'
+                resultError:
+                  $ref: '#/components/examples/resultError'
+      security:
+      - Token: []
+components:
+  schemas:
+    CommandResult:
+      type: object
+      properties:
+        data:
+          description: A response data holding documents that were returned as the
+            result of a command.
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/ResponseData'
+          oneOf:
+          - $ref: '#/components/schemas/MultiResponseData'
+          - $ref: '#/components/schemas/SingleResponseData'
+          nullable: true
+        status:
+          description: "Status objects, generally describe the side effects of commands,\
+            \ such as the number of updated or inserted documents."
+          minProperties: 1
+          type: object
+          properties:
+            insertedIds:
+              description: IDs of inserted documents for an insert command.
+              type: array
+              items:
+                type: string
+              nullable: true
+          additionalProperties: {}
+          nullable: true
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+          nullable: true
+    ComparisonExpression:
+      required:
+      - path
+      - filterOperations
+      type: object
+      properties:
+        path:
+          pattern: \S
+          type: string
+        filterOperations:
+          minItems: 1
+          type: array
+          items:
+            type: object
+    CountDocumentsCommands:
+      description: Command that returns count of documents in a collection based on
+        the collection.
+      type: object
+      properties:
+        options:
+          $ref: '#/components/schemas/JsonNode'
+        filter:
+          $ref: '#/components/schemas/FilterClause'
+    CreateCollectionCommand:
+      description: Command that creates a collection.
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          description: Name of the collection
+          maxLength: 48
+          minLength: 1
+          pattern: "[a-zA-Z][a-zA-Z0-9_]*"
+          type: string
+        options:
+          description: Configuration for the collection
+          type: object
+          properties:
+            vector:
+              description: Vector search index configuration for the collection
+              type: object
+              properties:
+                size:
+                  format: int32
+                  description: Vector field embedding size
+                  minimum: 0
+                  exclusiveMinimum: true
+                  type: integer
+                function:
+                  description: Similarity function algorithm that needs to be used
+                    for vector search
+                  default: cosine
+                  pattern: (dot_product|cosine|euclidean)
+                  type: string
+            vectorize:
+              description: Embedding api configuration to support `$vectorize`
+              type: object
+              properties:
+                size:
+                  format: int32
+                  description: Vector field embedding size
+                  minimum: 0
+                  exclusiveMinimum: true
+                  type: integer
+                function:
+                  description: Similarity function algorithm that needs to be used
+                    for vector search
+                  default: cosine
+                  pattern: (dot_product|cosine|euclidean)
+                  type: string
+    CreateEmbeddingServiceCommand:
+      description: Command that create embedding service configuration.
+      required:
+      - name
+      - apiKey
+      - baseUrl
+      type: object
+      properties:
+        options:
+          $ref: '#/components/schemas/JsonNode'
+        name:
+          description: Service name to be created
+          maxLength: 48
+          minLength: 1
+          pattern: "[a-zA-Z][a-zA-Z0-9_]*"
+          type: string
+        apiProvider:
+          description: Embedding service provider name
+          pattern: (openai|vertexai|huggingface)
+          type: string
+        apiKey:
+          description: Api token from the service provider
+          type: string
+        baseUrl:
+          description: Base url for the service provider
+          type: string
+    CreateNamespaceCommand:
+      description: Command that creates a namespace.
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          description: Name of the namespace
+          maxLength: 48
+          minLength: 1
+          pattern: "[a-zA-Z][a-zA-Z0-9_]*"
+          type: string
+        options:
+          $ref: '#/components/schemas/CreateNamespaceCommand.Options'
+    CreateNamespaceCommand.Options:
+      description: Options for creating a new namespace.
+      type: object
+      properties:
+        replication:
+          $ref: '#/components/schemas/Replication'
+    DeleteCollectionCommand:
+      description: Command that deletes a collection if one exists.
+      required:
+      - name
+      type: object
+      properties:
+        options:
+          $ref: '#/components/schemas/JsonNode'
+        name:
+          description: Name of the collection
+          maxLength: 48
+          minLength: 1
+          pattern: "[a-zA-Z][a-zA-Z0-9_]*"
+          type: string
+    DeleteManyCommand:
+      description: Command that finds documents based on the filter and deletes them
+        from a collection
+      type: object
+      properties:
+        options:
+          $ref: '#/components/schemas/JsonNode'
+        filter:
+          description: Filter clause based on which documents are identified
+          type: object
+          properties:
+            comparisonExpressions:
+              type: array
+              items:
+                $ref: '#/components/schemas/ComparisonExpression'
+          example:
+            name: Aaron
+            country: US
+    DeleteOneCommand:
+      description: Command that finds a single document and deletes it from a collection
+      required:
+      - filter
+      type: object
+      properties:
+        options:
+          $ref: '#/components/schemas/JsonNode'
+        filter:
+          description: Filter clause based on which document is identified
+          type: object
+          properties:
+            comparisonExpressions:
+              type: array
+              items:
+                $ref: '#/components/schemas/ComparisonExpression'
+          example:
+            name: Aaron
+            country: US
+        sort:
+          $ref: '#/components/schemas/SortClause'
+    DropNamespaceCommand:
+      description: Command that deletes a namespace.
+      required:
+      - name
+      type: object
+      properties:
+        options:
+          $ref: '#/components/schemas/JsonNode'
+        name:
+          description: Name of the namespace
+          maxLength: 48
+          minLength: 1
+          pattern: "[a-zA-Z][a-zA-Z0-9_]*"
+          type: string
+    Error:
+      description: "List of errors that occurred during a command execution. Can include\
+        \ additional properties besides the message that is always provided, like\
+        \ `errorCode`, `exceptionClass`, etc."
+      type: object
+      properties:
+        message:
+          description: Human-readable error message.
+          type: string
+    FilterClause:
+      type: object
+      properties:
+        comparisonExpressions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ComparisonExpression'
+      example:
+        name: Aaron
+        country: US
+    FindCollectionsCommand:
+      description: Command that lists all available collections in a namespace.
+      type: object
+      properties:
+        options:
+          $ref: '#/components/schemas/JsonNode'
+    FindCommand:
+      description: Command that finds a single JSON document from a collection.
+      type: object
+      properties:
+        filter:
+          $ref: '#/components/schemas/FilterClause'
+        projection:
+          $ref: '#/components/schemas/JsonNode'
+        sort:
+          $ref: '#/components/schemas/SortClause'
+        options:
+          $ref: '#/components/schemas/Options1'
+    FindNamespacesCommand:
+      description: Command that lists all available namespaces.
+      type: object
+      properties:
+        options:
+          $ref: '#/components/schemas/JsonNode'
+    FindOneAndDeleteCommand:
+      description: Command that finds a single JSON document from a collection and
+        deletes it. The deleted document is returned
+      type: object
+      properties:
+        filter:
+          $ref: '#/components/schemas/FilterClause'
+        sort:
+          $ref: '#/components/schemas/SortClause'
+        projection:
+          $ref: '#/components/schemas/JsonNode'
+    FindOneAndReplaceCommand:
+      description: Command that finds a single JSON document from a collection and
+        replaces it with the replacement document.
+      required:
+      - replacement
+      type: object
+      properties:
+        filter:
+          $ref: '#/components/schemas/FilterClause'
+        sort:
+          $ref: '#/components/schemas/SortClause'
+        projection:
+          $ref: '#/components/schemas/JsonNode'
+        replacement:
+          $ref: '#/components/schemas/ObjectNode'
+        options:
+          $ref: '#/components/schemas/FindOneAndReplaceCommand.Options'
+    FindOneAndReplaceCommand.Options:
+      description: Options for `findOneAndReplace` command.
+      type: object
+      properties:
+        returnDocument:
+          description: "Specifies which document to perform the projection on. If\
+            \ `before` the projection is performed on the document before the replacement\
+            \ is applied, if `after` the document projection is from the document\
+            \ after the replacement."
+          default: before
+          pattern: (after|before)
+          type: string
+        upsert:
+          description: "When `true`, if no documents match the `filter` clause the\
+            \ command will create a new _empty_ document and apply all _id filter\
+            \ and replacement document to the empty document."
+          default: false
+          type: boolean
+    FindOneAndUpdateCommand:
+      description: Command that finds a single JSON document from a collection and
+        updates the value provided in the update clause.
+      required:
+      - update
+      type: object
+      properties:
+        filter:
+          $ref: '#/components/schemas/FilterClause'
+        projection:
+          $ref: '#/components/schemas/JsonNode'
+        sort:
+          $ref: '#/components/schemas/SortClause'
+        update:
+          $ref: '#/components/schemas/UpdateClause'
+        options:
+          $ref: '#/components/schemas/FindOneAndUpdateCommand.Options'
+    FindOneAndUpdateCommand.Options:
+      description: Options for `findOneAndUpdate` command.
+      type: object
+      properties:
+        returnDocument:
+          description: "Specifies which document to perform the projection on. If\
+            \ `before` the projection is performed on the document before the update\
+            \ is applied, if `after` the document projection is from the document\
+            \ after the update."
+          default: before
+          pattern: (after|before)
+          type: string
+        upsert:
+          description: "When `true`, if no documents match the `filter` clause the\
+            \ command will create a new _empty_ document and apply the `update` clause\
+            \ and all equality filters to the empty document."
+          default: false
+          type: boolean
+    FindOneCommand:
+      description: Command that finds a single JSON document from a collection.
+      type: object
+      properties:
+        filter:
+          $ref: '#/components/schemas/FilterClause'
+        projection:
+          $ref: '#/components/schemas/JsonNode'
+        sort:
+          $ref: '#/components/schemas/SortClause'
+        options:
+          $ref: '#/components/schemas/Options'
+    InsertManyCommand:
+      description: Command that inserts multiple JSON document to a collection.
+      required:
+      - documents
+      type: object
+      properties:
+        documents:
+          description: JSON document to insert.
+          minItems: 1
+          type: array
+          items: {}
+        options:
+          $ref: '#/components/schemas/InsertManyCommand.Options'
+    InsertManyCommand.Options:
+      description: Options for inserting many documents.
+      type: object
+      properties:
+        ordered:
+          description: "When `true` the server will insert the documents in sequential\
+            \ order, otherwise when `false` the server is free to re-order the inserts\
+            \ and parallelize them for performance. See specifications for more info\
+            \ on failure modes."
+          default: true
+          type: boolean
+    InsertOneCommand:
+      description: Command that inserts a single JSON document to a collection.
+      required:
+      - document
+      type: object
+      properties:
+        options:
+          $ref: '#/components/schemas/JsonNode'
+        document:
+          description: JSON document to insert.
+          type: object
+    JsonNode:
+      type: object
+      properties:
+        empty:
+          type: boolean
+        valueNode:
+          type: boolean
+        containerNode:
+          type: boolean
+        missingNode:
+          type: boolean
+        array:
+          type: boolean
+        object:
+          type: boolean
+        nodeType:
+          $ref: '#/components/schemas/JsonNodeType'
+        pojo:
+          type: boolean
+        number:
+          type: boolean
+        integralNumber:
+          type: boolean
+        floatingPointNumber:
+          type: boolean
+        short:
+          type: boolean
+        int:
+          type: boolean
+        long:
+          type: boolean
+        float:
+          type: boolean
+        double:
+          type: boolean
+        bigDecimal:
+          type: boolean
+        bigInteger:
+          type: boolean
+        textual:
+          type: boolean
+        boolean:
+          type: boolean
+        "null":
+          type: boolean
+        binary:
+          type: boolean
+    JsonNodeFactory:
+      type: object
+      properties:
+        _cfgBigDecimalExact:
+          type: boolean
+          deprecated: true
+        maxElementIndexForInsert:
+          format: int32
+          type: integer
+    JsonNodeType:
+      enum:
+      - ARRAY
+      - BINARY
+      - BOOLEAN
+      - MISSING
+      - "NULL"
+      - NUMBER
+      - OBJECT
+      - POJO
+      - STRING
+      type: string
+    MultiResponseData:
+      description: Response data for multiple documents commands.
+      required:
+      - documents
+      type: object
+      properties:
+        documents:
+          description: Documents that resulted from a command.
+          minItems: 0
+          type: array
+          items: {}
+        nextPageState:
+          description: Next page state for pagination.
+          type: string
+          nullable: true
+    ObjectNode:
+      type: object
+      properties:
+        valueNode:
+          type: boolean
+        containerNode:
+          type: boolean
+        missingNode:
+          type: boolean
+        array:
+          type: boolean
+        pojo:
+          type: boolean
+        number:
+          type: boolean
+        integralNumber:
+          type: boolean
+        floatingPointNumber:
+          type: boolean
+        short:
+          type: boolean
+        int:
+          type: boolean
+        long:
+          type: boolean
+        float:
+          type: boolean
+        double:
+          type: boolean
+        bigDecimal:
+          type: boolean
+        bigInteger:
+          type: boolean
+        textual:
+          type: boolean
+        boolean:
+          type: boolean
+        "null":
+          type: boolean
+        binary:
+          type: boolean
+        _nodeFactory:
+          $ref: '#/components/schemas/JsonNodeFactory'
+        _children:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/JsonNode'
+        nodeType:
+          $ref: '#/components/schemas/JsonNodeType'
+        object:
+          type: boolean
+        empty:
+          type: boolean
+    Options:
+      type: object
+      properties:
+        includeSimilarity:
+          description: Include similarity function score in response.
+          type: boolean
+    Options1:
+      type: object
+      properties:
+        limit:
+          format: int32
+          description: "Maximum number of document that can be fetched for the command.\
+            \ If value is higher than the default page size, amount of returned documents\
+            \ will be limited to the default page size and paging state will be returned\
+            \ in the response, so a caller can to continue paging through documents."
+          minimum: 0
+          exclusiveMinimum: true
+          type: integer
+        skip:
+          format: int32
+          description: Skips provided number of documents before returning sorted
+            documents.
+          minimum: 0
+          type: integer
+        pagingState:
+          description: Next page state for pagination.
+          type: string
+        includeSimilarity:
+          description: Include similarity function score in response.
+          type: boolean
+    Replication:
+      description: Cassandra based replication settings.
+      required:
+      - class
+      type: object
+      properties:
+        class:
+          pattern: SimpleStrategy|NetworkTopologyStrategy
+          type: string
+    ResponseData:
+      type: object
+    SingleResponseData:
+      description: Response data for a single document commands.
+      required:
+      - document
+      type: object
+      properties:
+        document:
+          description: Document that resulted from a command.
+          type: object
+          nullable: true
+    SortClause:
+      type: object
+      properties:
+        sortExpressions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SortExpression'
+      example:
+        user.age: -1
+        user.name: 1
+    SortExpression:
+      required:
+      - path
+      type: object
+      properties:
+        path:
+          pattern: \S
+          type: string
+        ascending:
+          type: boolean
+        vector:
+          type: array
+          items:
+            format: float
+            type: number
+        vectorize:
+          type: string
+    UpdateClause:
+      type: object
+      properties:
+        updateOperationDefs:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/ObjectNode'
+      example:
+        $set:
+          location: New York
+        $unset:
+          new_data: 1
+    UpdateManyCommand:
+      description: Command that finds documents from a collection and updates it with
+        the values provided in the update clause.
+      required:
+      - update
+      type: object
+      properties:
+        filter:
+          $ref: '#/components/schemas/FilterClause'
+        update:
+          $ref: '#/components/schemas/UpdateClause'
+        options:
+          $ref: '#/components/schemas/UpdateManyCommand.Options'
+    UpdateManyCommand.Options:
+      description: Options for updating many documents.
+      type: object
+      properties:
+        upsert:
+          description: "When `true`, if no documents match the `filter` clause the\
+            \ command will create a new _empty_ document and apply the `update` clause\
+            \ and all equality filters to the empty document."
+          default: false
+          type: boolean
+    UpdateOneCommand:
+      description: Command that finds a single JSON document from a collection and
+        updates the value provided in the update clause.
+      required:
+      - update
+      type: object
+      properties:
+        filter:
+          $ref: '#/components/schemas/FilterClause'
+        update:
+          $ref: '#/components/schemas/UpdateClause'
+        sort:
+          $ref: '#/components/schemas/SortClause'
+        options:
+          $ref: '#/components/schemas/UpdateOneCommand.Options'
+    UpdateOneCommand.Options:
+      description: Options for updating a document.
+      type: object
+      properties:
+        upsert:
+          description: "When `true`, if no documents match the `filter` clause the\
+            \ command will create a new _empty_ document and apply the `update` clause\
+            \ and all equality filters to the empty document."
+          default: false
+          type: boolean
+  parameters:
+    collection:
+      name: collection
+      in: path
+      description: The name of the collection.
+      required: true
+      schema:
+        maxLength: 48
+        pattern: "[a-zA-Z][a-zA-Z0-9_]*"
+        type: string
+      example: events
+    namespace:
+      name: namespace
+      in: path
+      description: The namespace where the collection is located.
+      required: true
+      schema:
+        maxLength: 48
+        pattern: "[a-zA-Z][a-zA-Z0-9_]*"
+        type: string
+      example: cycling
+  examples:
+    countDocuments:
+      summary: '`countDocuments` command'
+      value:
+        countDocuments:
+          filter:
+            location: London
+            race.competitors:
+              $eq: 100
+    createCollection:
+      summary: '`CreateCollection` command'
+      value:
+        createCollection:
+          name: events
+    createCollectionVectorSearch:
+      summary: '`CreateCollection` command with vector search'
+      value:
+        createCollection:
+          name: events_vector
+          options:
+            vector:
+              size: 2
+              function: cosine
+    createEmbeddingService:
+      summary: '`createEmbeddingService` command'
+      value:
+        createEmbeddingService:
+          name: open_ai_service_name
+          apiProvider: openai
+          apiKey: token
+          baseUrl: https://api.openai.com/v1/
+    createNamespace:
+      summary: '`CreateNamespace` command'
+      value:
+        createNamespace:
+          name: cycling
+    createNamespaceWithReplication:
+      summary: '`CreateNamespace` command with replication'
+      value:
+        createNamespace:
+          name: cycling
+          options:
+            replication:
+              class: SimpleStrategy
+              replication_factor: 3
+    deleteCollection:
+      summary: '`DeleteCollection` command'
+      value:
+        deleteCollection:
+          name: events
+    deleteMany:
+      summary: '`deleteMany` command'
+      value:
+        deleteMany:
+          filter:
+            location: London
+    deleteOne:
+      summary: '`deleteOne` command'
+      value:
+        deleteOne:
+          filter:
+            _id: "1"
+          sort:
+            race.start_date: 1
+    dropNamespace:
+      summary: '`DropNamespace` command'
+      value:
+        dropNamespace:
+          name: cycling
+    find:
+      summary: '`find` command'
+      value:
+        find:
+          filter:
+            location: London
+            race.competitors:
+              $eq: 100
+          projection:
+            tags: 0
+          sort:
+            location: 1
+          options:
+            limit: 1000
+            pagingState: Next paging state got from previous page call
+    findCollections:
+      summary: '`FindCollections` command'
+      value:
+        findCollections: {}
+    findNamespaces:
+      summary: '`FindNamespaces` command'
+      value:
+        findNamespaces: {}
+    findOne:
+      summary: '`findOne` command'
+      value:
+        findOne:
+          filter:
+            location: London
+            race.competitors:
+              $eq: 100
+          projection:
+            _id: 0
+            location: 1
+            race.start_date: 1
+            tags: 1
+          sort:
+            race.start_date: 1
+    findOneAndDelete:
+      summary: '`findOneAndDelete` command'
+      value:
+        findOneAndDelete:
+          filter:
+            location: London
+          sort:
+            race.start_date: 1
+          projection:
+            location: 1
+    findOneAndReplace:
+      summary: '`findOneAndReplace` command'
+      value:
+        findOneAndReplace:
+          filter:
+            location: London
+          sort:
+            race.start_date: 1
+          replacement:
+            location: New York
+            count: 3
+          options:
+            returnDocument: before
+            upsert: true
+          projection:
+            location: 1
+    findOneAndUpdate:
+      summary: '`findOneAndUpdate` command'
+      value:
+        findOneAndUpdate:
+          filter:
+            location: London
+          sort:
+            location: 1
+          update:
+            $set:
+              location: New York
+            $inc:
+              count: 3
+          projection:
+            count: 1
+            location: 1
+            race: 1
+          options:
+            returnDocument: before
+            upsert: true
+    findOneVectorSearch:
+      summary: '`findOne` command with vector search'
+      value:
+        findOne:
+          filter:
+            location: London
+            race.competitors:
+              $eq: 100
+          projection:
+            _id: 0
+            location: 1
+            race.start_date: 1
+            tags: 1
+          sort:
+            $vector:
+            - 0.25
+            - 0.25
+            - 0.25
+            - 0.25
+            - 0.25
+          options:
+            includeSimilarity: true
+    findVectorSearch:
+      summary: '`find` command with vector search'
+      value:
+        find:
+          filter:
+            location: London
+            race.competitors:
+              $eq: 100
+          projection:
+            tags: 0
+          sort:
+            $vector:
+            - 0.25
+            - 0.25
+            - 0.25
+            - 0.25
+            - 0.25
+          options:
+            limit: 1000
+            includeSimilarity: true
+    insertMany:
+      summary: '`insertMany` command'
+      value:
+        insertMany:
+          documents:
+          - _id: "1"
+            location: London
+            race:
+              competitors: 100
+              start_date: 2022-08-15
+            tags:
+            - eu
+            $vector:
+            - 0.35
+            - 0.35
+            - 0.35
+            - 0.35
+            - 0.35
+          - _id: "2"
+            location: New York
+            race:
+              competitors: 150
+              start_date: 2022-09-15
+            tags:
+            - us
+            $vector:
+            - 0.45
+            - 0.45
+            - 0.45
+            - 0.45
+            - 0.45
+          options:
+            ordered: true
+    insertOne:
+      summary: '`insertOne` command'
+      value:
+        insertOne:
+          document:
+            _id: "1"
+            location: London
+            race:
+              competitors: 100
+              start_date: 2022-08-15
+            tags: []
+            $vector:
+            - 0.25
+            - 0.25
+            - 0.25
+            - 0.25
+            - 0.25
+    resultCount:
+      summary: '`countDocuments` command result'
+      value:
+        status:
+          count: 2
+    resultCreate:
+      summary: Create result
+      value:
+        status:
+          ok: 1
+    resultDeleteMany:
+      summary: '`deleteMany` command result'
+      value:
+        status:
+          deletedCount: 2
+          moreData: true
+    resultDeleteOne:
+      summary: '`deleteOne` command result'
+      value:
+        status:
+          deletedCount: 1
+    resultError:
+      summary: Error result
+      value:
+        errors:
+        - message: The command failed because of some specific reason.
+    resultFind:
+      summary: '`find` command result'
+      value:
+        data:
+          documents:
+          - _id: "1"
+            location: London
+            race:
+              competitors: 100
+              start_date: 2022-08-15
+            tags:
+            - eu
+          - _id: "2"
+            location: Barcelona
+            race:
+              competitors: 125
+              start_date: 2022-09-26
+            tags:
+            - us
+          nextPageState: jA8qg0AitZ8q28568GybNQ==
+    resultFindCollections:
+      summary: '`findCollections` command result'
+      value:
+        status:
+          collections:
+          - events
+    resultFindNamespaces:
+      summary: '`findNamespaces` command result'
+      value:
+        status:
+          namespaces:
+          - cycling
+    resultFindOne:
+      summary: '`findOne` command result'
+      value:
+        data:
+          document:
+            location: London
+            race:
+              start_date: 2022-08-15
+            tags:
+            - eu
+    resultFindOneAndDelete:
+      summary: '`findOneAndDetele` command result'
+      value:
+        data:
+          document:
+            _id: "1"
+            location: New York
+            count: 3
+        status:
+          deletedCount: 1
+    resultFindOneAndReplace:
+      summary: '`findOneAndReplace` command result'
+      value:
+        data:
+          document:
+            _id: "1"
+            location: New York
+            count: 3
+        status:
+          matchedCount: 1
+          modifiedCount: 1
+    resultFindOneAndUpdate:
+      summary: '`findOneAndUpdate` command result'
+      value:
+        data:
+          document:
+            _id: "1"
+            location: New York
+            race:
+              competitors: 100
+              start_date: 2022-08-15
+            count: 3
+        status:
+          matchedCount: 1
+          modifiedCount: 1
+    resultFindOneAndUpdateUpsert:
+      summary: '`findOneAndUpdate` command with upsert result'
+      value:
+        data:
+          document:
+            _id: "1"
+            location: New York
+            count: 3
+        status:
+          upsertedId: "1"
+          matchedCount: 0
+          modifiedCount: 1
+    resultInsert:
+      summary: '`insertOne` & `insertMany` command result'
+      value:
+        status:
+          insertedIds:
+          - "1"
+          - "2"
+    resultUpdateMany:
+      summary: '`updateMany` command result'
+      value:
+        status:
+          matchedCount: 20
+          modifiedCount: 20
+          moreData: true
+    resultUpdateManyUpsert:
+      summary: '`updateMany` command with upsert result'
+      value:
+        status:
+          upsertedId: "1"
+          matchedCount: 0
+          modifiedCount: 1
+    resultUpdateOne:
+      summary: '`updateOne` command result'
+      value:
+        status:
+          matchedCount: 1
+          modifiedCount: 1
+    resultUpdateOneUpsert:
+      summary: '`updateOne` command with upsert result'
+      value:
+        status:
+          upsertedId: "1"
+          matchedCount: 0
+          modifiedCount: 1
+    updateMany:
+      summary: '`updateMany` command'
+      value:
+        updateMany:
+          filter:
+            location: London
+          update:
+            $set:
+              location: New York
+            $push:
+              tags: marathon
+          options:
+            upsert: true
+    updateOne:
+      summary: '`updateOne` command'
+      value:
+        updateOne:
+          filter:
+            location: London
+          update:
+            $set:
+              location: New York
+            $push:
+              tags: marathon
+          sort:
+            race.start_date: 1
+          options:
+            upsert: true
+  securitySchemes:
+    Token:
+      type: apiKey
+      name: X-Cassandra-Token
+      in: header

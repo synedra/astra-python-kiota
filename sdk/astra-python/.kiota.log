@@ -1,0 +1,2 @@
+Warning: KiotaBuilder Omitted property documents for model MultiResponseData in API path \v1, the schema is invalid.
+Warning: KiotaBuilder Omitted property documents for model InsertManyCommand in API path \v1\{namespace}\{collection}, the schema is invalid.
